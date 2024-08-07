@@ -1,0 +1,23 @@
+/* Write your code here: */
+h1,h2{
+    color:blueviolet
+}
+
+/* direct child */
+.box > p{
+    color: firebrick;
+}
+
+/* descendant selector */
+.box li{
+    color: blue;
+}
+
+li.done{
+    font-weight: bold;
+    color:seagreen;
+}
+
+ul > p.done{
+    font-size: .5rem ;
+}
