@@ -1,0 +1,30 @@
+body{
+    background-color: #22577a;
+}
+h1{
+    display: flex;
+    justify-content: center;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: #57cc99;
+    padding: 10px;
+    border-radius:10px;
+}
+.pokeMon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #c7f9cc;
+    width: 100px;
+    flex-direction: column;
+    border-radius: 20%;
+}
+.pokeMon>img{
+    margin-bottom: 0%;
+}
+.pokeMon p{
+    margin-top: 0%;
+}
