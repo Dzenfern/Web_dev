@@ -1,0 +1,29 @@
+article{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.scoreBoard{
+    display: flex;
+    justify-content: center;
+}
+.scoreBoard>div{
+    font-size: 50px;
+}
+.controls{
+    margin-top: 10px;
+}
+
+.win{
+    color: rgb(154, 254, 5);
+    text-decoration:underline;
+}
+
+.lose{
+    color: red;
+}
+.off{
+    opacity: .5;
+}
