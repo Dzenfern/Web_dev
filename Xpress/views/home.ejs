@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOTOKO</title>
+    
+</head>
+<body>
+    <h1>HOME PAGE</h1>
+    <br>
+    <h2>welcome to <%= subreddit %>  </h2>
+    <ul class="lis">
+        <% for(let cat of cats){ %>
+            <li><%=cat%><button>Remove</button></li>
+        <% } %>
+    </ul>
+</p>    
+<script src="../public/main.js"></script>
+</body>
+</html>
