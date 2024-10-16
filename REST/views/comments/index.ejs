@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commnets</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Comments</h1>
+    <div>
+        <hr>
+        <% comments.forEach(comment => { %>
+            <div class="commie">
+                <h3><%= comment.comment  %></h3>
+                <sub><%= comment.username %></sub>  
+                <span><a href="/comments/<%= comment.id %>">VIEW</a></span>
+                <span><form id="formi" method ="post" action="/comments/<%= comment.id %>?_method=DELETE"><button >DELETE</button></form></span>
+            </div>
+        <% }) %>
+    </div>
+    <a href="/comments/new">NEW COMMENTS</a>
+</body>
+</html>

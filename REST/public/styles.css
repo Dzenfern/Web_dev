@@ -1,0 +1,16 @@
+.commie{
+    background-color: blueviolet;
+    width: 500px;
+    height: auto;
+    margin: 10px;
+}
+
+#formi{
+    display: inline;
+}
+
+#formi > button{
+    background-color: rgba(0, 0, 0, 0.0);
+    border: 0px;
+    text-decoration-line: underline black;
+}
