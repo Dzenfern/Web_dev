@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmStand</title>
+</head>
+<body>
+    <h1>WELCOME TO FARM LANDia</h1>
+    <div>
+        <% for(let product of products) { %>
+            <%- include("partials/prod.ejs",{product:product}) %>
+        <% } %>
+    </div>
+</body>
+</html>
