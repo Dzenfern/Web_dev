@@ -17,6 +17,10 @@ const ProductSchema = mongoose.Schema({
     }
 })
 
+ProductSchema.virtual("GetDeets").get(function(){
+    return `${this.name}|${this.category}|${this.price}`
+})
+
 const Product = mongoose.model("products",ProductSchema);
 
 module.exports={Product};

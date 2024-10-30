@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"NOTHING HERE\" && exit 1",
-    "server" : "nodemon index.js"
+    "server": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "method-override": "^3.0.0",
     "mongoose": "^8.7.2"
   }
 }
