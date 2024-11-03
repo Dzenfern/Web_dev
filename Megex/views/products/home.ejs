@@ -12,6 +12,9 @@
             <%- include("partials/prod.ejs",{product:product}) %>
         <% } %>
     </div>
+    <% if(category!=="All"){ %>
+        <a href="/products">ALL PRODUCTS</a>
+    <% } %>
     <a href="/products/new">ADD PRODUCT</a>
 </body>
 </html>

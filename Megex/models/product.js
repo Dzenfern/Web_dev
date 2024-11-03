@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const {Schema} = require("mongoose")
 
-const ProductSchema = mongoose.Schema({
+const ProductSchema = Schema({
     name:{
         type:String,
         required:true,
@@ -14,6 +15,10 @@ const ProductSchema = mongoose.Schema({
         type:String,
         lowercase:true,
         enum:["fruit","vegetable","dairy"]
+    },
+    farm:{
+        type:Schema.Types.ObjectId,
+        ref:"farm"
     }
 })
 
@@ -21,6 +26,6 @@ ProductSchema.virtual("GetDeets").get(function(){
     return `${this.name}|${this.category}|${this.price}`
 })
 
-const Product = mongoose.model("products",ProductSchema);
+const Product = mongoose.model("product",ProductSchema);
 
 module.exports={Product};

@@ -6,9 +6,9 @@
     <title>ADD PRODUCT</title>
 </head>
 <body>
-    <form action="/products/add" method="post">
+    <form action="/farm/<%= id %>/products" method="post">
         <label for="name">PRODUCT NAME</label>
-        <input type="text" name="name" id="name" required>
+        <input type="text" name="name" id="name" >
         <br>
         <label for="price">PRICE</label>
         <input type="number" name="price" id="price" min="1" step="any" required>
