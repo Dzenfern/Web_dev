@@ -10,6 +10,11 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <style>
+      .color{
+        color: blueviolet;
+      }
+    </style>
   </head>
   <body class="d-flex flex-column vh-100">
     <%- include("../partials/navbar.ejs") %>
@@ -43,6 +48,12 @@
           );
         });
       })();
+
+      const rat = document.querySelector("#rating");
+      const stars = document.querySelector("#stars");
+      rat.addEventListener("change",()=>{
+        stars.textContent=`${rat.value}`
+      })
     </script>
   </body>
 </html>

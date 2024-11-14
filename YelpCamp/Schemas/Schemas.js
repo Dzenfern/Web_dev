@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const Review = require("../models/review");
 
 exports.CampgroundSchema = Joi.object({
     campground: Joi.object({
@@ -9,3 +10,10 @@ exports.CampgroundSchema = Joi.object({
       image:Joi.string().required()
     }).required(),
   });
+
+exports.ReviewSchema=Joi.object({
+  review:Joi.object({
+    rating:Joi.number().required().min(1).max(5),
+    body:Joi.string().required()
+  }).required()
+});

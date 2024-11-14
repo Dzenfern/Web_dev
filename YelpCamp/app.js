@@ -3,12 +3,13 @@ const path = require("path");
 const app = express();
 const methodOverride = require("method-override");
 const CampGround = require("./models/campground");
+const Review = require('./models/review');
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const { catchAsync } = require("./utils/catchAsync");
-const {CampgroundSchema} = require('./Schemas/CampgroundSchema');
+const {CampgroundSchema,ReviewSchema} = require('./Schemas/Schemas');
 
 // setting up the server options and view paths
 app.engine("ejs", ejsMate);
@@ -53,6 +54,16 @@ const validateCampground = (req,res,next)=>{
       }
 }
 
+const validateReview = (req,res,next)=>{
+  const {error} = ReviewSchema.validate(req.body);
+  if(error){
+      const msg = error.details.map(el=> el.message).join(",")
+      throw new ExpressError(msg,400)
+  }else{
+    next();
+  }
+}
+
 app.get("/secret", verifyPassword, (req, res) => {
   res.send("I AM GREAT....I HOPE");
 });
@@ -85,10 +96,27 @@ app.post("/campgrounds",validateCampground,catchAsync(async (req, res, next) => 
 
 app.get("/campground/:id",catchAsync(async (req, res) => {
     const { id } = req.params;
-    const cg = await CampGround.findById(id);
+    const cg = await CampGround.findById(id).populate("reviews");
     res.render("camp/show.ejs", { campground: cg });
   })
 );
+
+app.post("/campground/:id/reviews",validateReview,catchAsync(async (req,res)=>{
+  const campground = await CampGround.findById(req.params.id);
+  const review = await  Review(req.body.review);
+  campground.reviews.push(review);
+  await review.save();
+  await campground.save();
+  res.redirect(`/campground/${req.params.id}`)
+}))
+
+app.delete("/campgrounds/:id/reviews/:reviewId",catchAsync(async (req,res)=>{
+  const {id,reviewId} = req.params;
+  await CampGround.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+  await Review.findByIdAndDelete(reviewId);
+  res.redirect(`/campground/${id}`)
+  
+}))
 
 app.get(
   "/campground/:id/edit",
