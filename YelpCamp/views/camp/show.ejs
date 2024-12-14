@@ -14,7 +14,7 @@
                 <li class="list-group-item">$ <%= campground.price  %>/night</li>
             </ul>
             <div class="card-body">
-                <a class="card-link btn btn-info" href="/campground/<%= campground._id %>/edit">EDIT CAMPGROUND</a>
+                <a class="card-link btn btn-info" href="/campgrounds/<%= campground._id %>/edit">EDIT CAMPGROUND</a>
 
                 <form class="d-inline" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="post"><button class="btn btn-danger  mt-1">DELETE</button></form>
             </div>
@@ -27,7 +27,7 @@
     <div class="col-6">
         <div class="card">
             <div class="m-4" >
-                <form class="validated-form" action="/campground/<%= campground._id  %>/reviews" method="post" novalidate>
+                <form class="validated-form" action="/campgrounds/<%= campground._id  %>/reviews" method="post" novalidate>
                 <div class="mb-3" >
                     <label class="form-label" for="rating">Rating:</label>
                     <span class="row col-3 offset-5" id="stars"></span>

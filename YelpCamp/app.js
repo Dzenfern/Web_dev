@@ -10,6 +10,10 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const { catchAsync } = require("./utils/catchAsync");
 const {CampgroundSchema,ReviewSchema} = require('./Schemas/Schemas');
+const campgrounds = require("./routes/campgrounds")
+const reviews = require("./routes/reviews");
+const session = require('express-session');
+const flash = require('connect-flash');
 
 // setting up the server options and view paths
 app.engine("ejs", ejsMate);
@@ -21,6 +25,28 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
+
+const sessionConfig={
+    secret:"wenamechuindasummer",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{
+      expires:Date.now()+ 1000*60*60*24*7,
+      maxAge:1000*60*60*24*7,
+      httpOnly:true
+    }
+}
+
+app.use(session(sessionConfig))
+
+app.use(flash())
+
+app.use((req,res,next)=>{
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next()
+})
+
 
 //LOGGING SETUP
 app.use(morgan("dev"));
@@ -34,15 +60,6 @@ mongoose
     console.log(err);
   });
 
-const verifyPassword = function (req, res, next) {
-  const { password } = req.query;
-  console.log(req.query);
-
-  if (password === "chickens") {
-    next();
-  }
-  throw new ExpressError("Password Required", 401);
-};
 
 const validateCampground = (req,res,next)=>{
       const {error} = CampgroundSchema.validate(req.body);
@@ -64,96 +81,8 @@ const validateReview = (req,res,next)=>{
   }
 }
 
-app.get("/secret", verifyPassword, (req, res) => {
-  res.send("I AM GREAT....I HOPE");
-});
-
-app.get("/error", (req, res) => {
-  cat.get();
-});
-
-app.get("/", (req, res) => {
-  res.redirect("/campgrounds");
-});
-
-app.get("/campgrounds",catchAsync(async (req, res) => {
-    const cgs = await CampGround.find({});
-    res.render("camp/index.ejs", { campgrounds: cgs });
-  })
-);
-
-app.get("/campground/new", (req, res) => {
-  res.render("camp/new.ejs");
-});
-
-app.post("/campgrounds",validateCampground,catchAsync(async (req, res, next) => {
-    // if(!req.body.campground) throw new ExpressError("Invalid Campground Data",400)
-    const campground = new CampGround(req.body.campground);
-    await campground.save();
-    res.redirect(`/campground/${campground._id}`);
-  })
-);
-
-app.get("/campground/:id",catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const cg = await CampGround.findById(id).populate("reviews");
-    res.render("camp/show.ejs", { campground: cg });
-  })
-);
-
-app.post("/campground/:id/reviews",validateReview,catchAsync(async (req,res)=>{
-  const campground = await CampGround.findById(req.params.id);
-  const review = await  Review(req.body.review);
-  campground.reviews.push(review);
-  await review.save();
-  await campground.save();
-  res.redirect(`/campground/${req.params.id}`)
-}))
-
-app.delete("/campgrounds/:id/reviews/:reviewId",catchAsync(async (req,res)=>{
-  const {id,reviewId} = req.params;
-  await CampGround.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
-  await Review.findByIdAndDelete(reviewId);
-  res.redirect(`/campground/${id}`)
-  
-}))
-
-app.get(
-  "/campground/:id/edit",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const cg = await CampGround.findById(id);
-    res.render("camp/edit.ejs", { campground: cg });
-  })
-);
-
-app.put("/campgrounds/:id",validateCampground,catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await CampGround.findByIdAndUpdate(
-      id,
-      { ...req.body.campground },
-      { runValidators: true }
-    );
-    res.redirect(`/campground/${id}`);
-  })
-);
-
-app.delete(
-  "/campgrounds/:id",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await CampGround.findByIdAndDelete(id);
-    res.redirect(`/campgrounds`);
-  })
-);
-
-// app.use((err,req,res,next)=>{
-//     console.log("***********************************");
-//     console.log("******************ERROR************");
-//     console.log("***********************************");
-//     console.log(err);
-//     next(err);
-// })
+app.use("/campgrounds",campgrounds);
+app.use('/campgrounds/:id/reviews',reviews);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page not found", 404));
@@ -167,4 +96,5 @@ app.use((err, req, res, next) => {
 
 app.listen(9090, () => {
   console.log("Serving ON PORT 9090");
+  console.log(`http://localhost:9090/`)
 });
